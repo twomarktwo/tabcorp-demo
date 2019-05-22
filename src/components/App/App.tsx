@@ -4,6 +4,7 @@ import {LottoPickGrid} from '../LottoPickGrid/LottoPickGrid';
 import {PickedBall} from '../PickedBall/PickedBall';
 
 const App: React.FC = () => {
+
   return (
     <div className="app">
       <div className="picked-row">

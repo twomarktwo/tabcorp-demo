@@ -6,6 +6,7 @@ interface LottoPickGridProps {
   startNumber: number;
   endNumber: number;
   cellsPerRow: number;
+  selectedNumbers?: number[];
 }
 
 export const LottoPickGrid: React.FC<LottoPickGridProps> = (props : LottoPickGridProps) => {
@@ -14,7 +15,8 @@ export const LottoPickGrid: React.FC<LottoPickGridProps> = (props : LottoPickGri
   
   // Build each cell
   for(let cellNumber = props.startNumber; cellNumber<=props.endNumber; cellNumber++) {
-    currentRowCells.push(<LottoCell numberValue={cellNumber} key={cellNumber} />);
+    let cellIsSelected : boolean = (props.selectedNumbers != null && props.selectedNumbers.indexOf(cellNumber) >= 0);
+    currentRowCells.push(<LottoCell numberValue={cellNumber} key={cellNumber} selected={cellIsSelected} />);
     
     // If we have reached the last cell in the row then create the row
     if(cellNumber % props.cellsPerRow == 0) {

@@ -12,9 +12,12 @@
     width: 60px;
     cursor: pointer;
     color: #880088;
-    
   }
   
   .number-row {
     display: block;
+  }
+
+  .selected {
+    background-color: #666;
   }
