@@ -2,17 +2,46 @@
   display: table;
   margin: 0 auto;
   width: 600px; 
+  position: relative;
+  padding: 5px;
 }
 
+.loading-spinner-overlay {
+  display: none;
+}
+
+.loading-spinner-overlay.loading {
+  display: block;
+  position: absolute;
+  background: rgba(27, 35, 41, 0.2);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  text-align: center;
+  margin: auto;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 50%;
+  height: 200px;
+  margin: auto;
+  vertical-align: center;
+  line-height: 200px;
+}
 
 .pick-buttons {
   display: block;
   position: absolute;
   right: 0px;
   top: 0px;
-}
-
-.powerball-section {
 }
 
 .powerball-section.header {

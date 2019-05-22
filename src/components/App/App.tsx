@@ -8,6 +8,7 @@ interface ApplicationState {
   selectedValues: number[];
   selectedPowerBall: number | null;
   isLoading: boolean;
+  error?: string;
 }
 
 interface ApplicationProps {
@@ -24,8 +25,14 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
   }
 
   render() {
+    var loadingOverlayClasses = ["loading-spinner-overlay"];
+    if (this.state.isLoading) { loadingOverlayClasses.push('loading'); }
+
     return (
       <div className="app">
+        <div className={loadingOverlayClasses.join(" ")}>
+          <div className="loading-spinner"><img src="/images/loading-spinner.svg" /></div>
+        </div>
         <div className="picked-row">
           <PickedBall pickedNumber={this.state.selectedValues.length - 1 >= 0 ? this.state.selectedValues[0] : null} emptyValue=" " />
           <PickedBall pickedNumber={this.state.selectedValues.length - 1 >= 1 ? this.state.selectedValues[1] : null} emptyValue=" " />
@@ -44,14 +51,16 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
         </div>
         <LottoPickGrid startNumber={1} endNumber={35} cellsPerRow={10} selectedNumbers={this.state.selectedValues} />
         <div className="powerball-section header">Select Your Powerball</div>
-        <LottoPickGrid startNumber={1} endNumber={20} cellsPerRow={10} selectedNumbers={this.state.selectedPowerBall !== null ? [this.state.selectedPowerBall] : []}/>
+        <LottoPickGrid startNumber={1} endNumber={20} cellsPerRow={10} selectedNumbers={this.state.selectedPowerBall !== null ? [this.state.selectedPowerBall] : []} />
+        <div>{this.state.error}</div>
       </div>
     );
   }
 
   fetchLatestLottoResults() {
-    return axios.post("https://data.api.thelott.com/sales/vmax/web/data/lotto/latestresults", 
-      { CompanyId: "GoldenCasket", 
+    return axios.post("https://data.api.thelott.com/sales/vmax/web/data/lotto/latestresults",
+      {
+        CompanyId: "GoldenCasket",
         MaxDrawCountPerProduct: 1,
         OptionalProductFilter: ["Powerball"]
       });
@@ -63,7 +72,7 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
 
   resetValues() {
     this.setState({
-      selectedValues:[],
+      selectedValues: [],
       selectedPowerBall: null
     });
   }
@@ -75,15 +84,19 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
     });
 
     this.fetchLatestLottoResults().then((response) => {
+      let selectedValues = response.data.DrawResults[0].PrimaryNumbers;
+      let selectedPowerBall = response.data.DrawResults[0].SecondaryNumbers[0];
       this.setState({
-        selectedValues: response.data.DrawResults[0].PrimaryNumbers,
-        selectedPowerBall: response.data.DrawResults[0].SecondaryNumbers[0]
+        selectedValues: selectedValues || [],
+        selectedPowerBall: selectedPowerBall
       });
     }).catch(error => {
-
-    }).finally(()=> {
-
-    });   
+      this.setState(({ error: "An error occurred while trying to 'autofill'" }))
+    }).finally(() => {
+      this.setState({
+        isLoading: false
+      });
+    });
   }
 }
 
