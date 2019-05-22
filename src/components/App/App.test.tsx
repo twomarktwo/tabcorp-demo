@@ -53,7 +53,7 @@ describe("Test Application Setup", ()=> {
     const rootInstance = appComponent.root;
 
     // Find the autofill button
-    const autofillButton = rootInstance.findAllByType("button").filter(a=>a.children && a.children.length == 1 && a.children[0] === "autofill" )[0];
+    const autofillButton = rootInstance.findAllByType("button").filter(a=> a.props.id == "autofill-button" )[0];
     autofillButton.props.onClick(); // Simulate the click of the autofill
     let instance = appComponent.getInstance();
 
@@ -77,5 +77,4 @@ describe("Test Application Setup", ()=> {
       done();
     })
   });
-
 });
