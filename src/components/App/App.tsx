@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './App.css';
 import { LottoPickGrid } from '../LottoPickGrid/LottoPickGrid';
-import { PickedBall } from '../PickedBall/PickedBall';
+import { SelectedNumberRow } from '../SelectedNumberRow/SelectedNumberRow';
 
 interface ApplicationState {
   selectedValues: number[];
@@ -34,16 +34,7 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
           <div className="loading-spinner"><img src="/images/loading-spinner.svg" /></div>
         </div>
         <div className="picked-row">
-          <PickedBall pickedNumber={this.state.selectedValues.length - 1 >= 0 ? this.state.selectedValues[0] : null} emptyValue=" " />
-          <PickedBall pickedNumber={this.state.selectedValues.length - 1 >= 1 ? this.state.selectedValues[1] : null} emptyValue=" " />
-          <PickedBall pickedNumber={this.state.selectedValues.length - 1 >= 2 ? this.state.selectedValues[2] : null} emptyValue=" " />
-          <PickedBall pickedNumber={this.state.selectedValues.length - 1 >= 3 ? this.state.selectedValues[3] : null} emptyValue=" " />
-          <PickedBall pickedNumber={this.state.selectedValues.length - 1 >= 4 ? this.state.selectedValues[4] : null} emptyValue=" " />
-          <PickedBall pickedNumber={this.state.selectedValues.length - 1 >= 5 ? this.state.selectedValues[5] : null} emptyValue=" " />
-          <PickedBall pickedNumber={this.state.selectedValues.length - 1 >= 6 ? this.state.selectedValues[6] : null} emptyValue=" " />
-          <span className="powerball">
-            <PickedBall pickedNumber={this.state.selectedPowerBall} emptyValue="PB" />
-          </span>
+          <SelectedNumberRow selectedValues={this.state.selectedValues} selectedPowerBall={this.state.selectedPowerBall} />
           <div className="pick-buttons">
             <button id="autofill-button" className={"circle-button"} onClick={() => this.handleAutofillClick()}></button>
             <button id="reset-button" className={"circle-button"} onClick={() => this.handleResetClicked()}></button>
