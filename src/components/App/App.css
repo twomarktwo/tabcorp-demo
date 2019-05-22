@@ -1,6 +1,9 @@
 .app {
   display: table;
+  margin: 0 auto;
+  width: 600px; 
 }
+
 
 .pick-buttons {
   display: block;
@@ -57,4 +60,34 @@
   margin-bottom: 5px;
   display: block;
   position: relative;
+}
+
+@media only screen and (max-width: 620px) {
+  .app {
+    display: table;
+    margin: 0 auto;
+    width: 400px; 
+  }
+
+  .circle-button { 
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 40px;
+    height: 40px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 40px;
+    cursor: pointer;
+    display: table-cell;
+    position: relative;
+  }
+
+  .pick-buttons {
+    display: block;
+    position: relative;
+    text-align: right;
+    margin: 5px;
+  }
 }

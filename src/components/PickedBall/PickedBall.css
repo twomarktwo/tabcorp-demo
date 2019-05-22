@@ -27,5 +27,24 @@
     background-color: #899BAA;
     color: #FFF;
     box-shadow: none;
+  }
 
+  
+  @media only screen and (max-width: 620px) {
+    .picked-ball {
+      border: 1px solid #B2B2B2;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      color: #000;
+      line-height: 40px;
+      text-align: center;
+      background: #fff;
+      display: inline-block;
+      margin-right: 3px; 
+      vertical-align: top;
+      cursor: pointer;
+      box-shadow: inset 0 3px 5px 0 rgba(0, 0, 0, 0.2);  
+    }
   }

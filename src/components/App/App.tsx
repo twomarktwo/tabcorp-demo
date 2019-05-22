@@ -43,10 +43,8 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
           </div>
         </div>
         <LottoPickGrid startNumber={1} endNumber={35} cellsPerRow={10} selectedNumbers={this.state.selectedValues} />
-        <div className="powerball-section">
         <div className="powerball-section header">Select Your Powerball</div>
-          <LottoPickGrid startNumber={1} endNumber={20} cellsPerRow={10} selectedNumbers={this.state.selectedPowerBall !== null ? [this.state.selectedPowerBall] : []}/>
-        </div>
+        <LottoPickGrid startNumber={1} endNumber={20} cellsPerRow={10} selectedNumbers={this.state.selectedPowerBall !== null ? [this.state.selectedPowerBall] : []}/>
       </div>
     );
   }

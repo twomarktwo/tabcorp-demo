@@ -19,7 +19,7 @@ export const LottoPickGrid: React.FC<LottoPickGridProps> = (props : LottoPickGri
     currentRowCells.push(<LottoCell numberValue={cellNumber} key={cellNumber} selected={cellIsSelected} />);
     
     // If we have reached the last cell in the row then create the row
-    if(cellNumber % props.cellsPerRow == 0) {
+    if(cellNumber % props.cellsPerRow === 0) {
       let rowNumber = cellNumber / props.cellsPerRow;
       rows.push(<div className="number-row" key={rowNumber}>{currentRowCells}</div>);
       currentRowCells=[];
