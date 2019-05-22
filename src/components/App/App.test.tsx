@@ -77,4 +77,40 @@ describe("Test Application Setup", ()=> {
       done();
     })
   });
+
+  it('has correct values after autofill then reset', (done) => {
+    // Mock the API request
+    // Important details are the "PrimaryNumbers": [11, 13, 35, 34, 1, 17, 24] and "SecondaryNumbers": [19]
+    const mockPost = jest.spyOn(axios, 'post');
+    mockPost.mockImplementationOnce(() =>
+      Promise.resolve({
+        data: { "DrawResults": [{ "ProductId": "Powerball", "DrawNumber": 1200, "DrawDate": "2019-05-16T00:00:00", "DrawDisplayName": "Powerball Draw 1200", "DrawLogoUrl": "http://media.tatts.com/TattsServices/Lotto/Products/Powerball_v1.png", "PrimaryNumbers": [11, 13, 35, 34, 1, 17, 24], "SecondaryNumbers": [19], "TicketNumbers": null, "Dividends": [{ "Division": 1, "BlocNumberOfWinners": 1, "BlocDividend": 8000000.0000, "CompanyId": "GoldenCasket", "CompanyNumberOfWinners": 0, "CompanyDividend": 8000000.0000, "PoolTransferType": "NONE", "PoolTransferredTo": 0 }, { "Division": 2, "BlocNumberOfWinners": 2, "BlocDividend": 93464.3500, "CompanyId": "GoldenCasket", "CompanyNumberOfWinners": 0, "CompanyDividend": 93464.3500, "PoolTransferType": "NONE", "PoolTransferredTo": 0 }, { "Division": 3, "BlocNumberOfWinners": 20, "BlocDividend": 5711.7000, "CompanyId": "GoldenCasket", "CompanyNumberOfWinners": 5, "CompanyDividend": 5711.7000, "PoolTransferType": "NONE", "PoolTransferredTo": 0 }, { "Division": 4, "BlocNumberOfWinners": 421, "BlocDividend": 493.3500, "CompanyId": "GoldenCasket", "CompanyNumberOfWinners": 129, "CompanyDividend": 493.3500, "PoolTransferType": "NONE", "PoolTransferredTo": 0 }, { "Division": 5, "BlocNumberOfWinners": 944, "BlocDividend": 165.0000, "CompanyId": "GoldenCasket", "CompanyNumberOfWinners": 186, "CompanyDividend": 165.0000, "PoolTransferType": "NONE", "PoolTransferredTo": 0 }, { "Division": 6, "BlocNumberOfWinners": 14019, "BlocDividend": 71.8500, "CompanyId": "GoldenCasket", "CompanyNumberOfWinners": 2819, "CompanyDividend": 71.8500, "PoolTransferType": "NONE", "PoolTransferredTo": 0 }, { "Division": 7, "BlocNumberOfWinners": 18076, "BlocDividend": 43.6500, "CompanyId": "GoldenCasket", "CompanyNumberOfWinners": 3630, "CompanyDividend": 43.6500, "PoolTransferType": "NONE", "PoolTransferredTo": 0 }, { "Division": 8, "BlocNumberOfWinners": 89301, "BlocDividend": 17.4500, "CompanyId": "GoldenCasket", "CompanyNumberOfWinners": 17888, "CompanyDividend": 17.4500, "PoolTransferType": "NONE", "PoolTransferredTo": 0 }, { "Division": 9, "BlocNumberOfWinners": 261133, "BlocDividend": 10.4500, "CompanyId": "GoldenCasket", "CompanyNumberOfWinners": 52766, "CompanyDividend": 10.4500, "PoolTransferType": "NONE", "PoolTransferredTo": 0 }] }], "ErrorInfo": null, "Success": true }
+      }) as AxiosPromise
+    );
+
+    var appComponent = create(<App />);
+    const rootInstance = appComponent.root;
+
+    // Find the autofill button
+    const autofillButton = rootInstance.findAllByType("button").filter(a=> a.props.id == "autofill-button" )[0];
+    autofillButton.props.onClick(); // Simulate the click of the autofill
+
+    setImmediate(()=> {
+      const resetButton = rootInstance.findAllByType("button").filter(a=> a.props.id == "reset-button" )[0];
+      resetButton.props.onClick(); // Simulate the click of the autofill
+      
+      // Allow render loop to be called then assert the grids have had the selected values set
+      setImmediate(()=> {
+        const pickGrids = rootInstance.findAllByType(LottoPickGrid, {deep: true});
+        
+        const mainPickGrid = pickGrids[0];
+        expect(mainPickGrid.props.selectedNumbers.length).toBe(0);
+        
+        const powerBallGrid = pickGrids[1];
+        expect(powerBallGrid.props.selectedNumbers.length).toBe(0);
+        done();
+      })
+    });
+  });
+
 });
