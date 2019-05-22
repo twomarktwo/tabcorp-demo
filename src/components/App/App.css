@@ -2,30 +2,39 @@
   display: table;
 }
 
-.select-powerball-seperator {
+.powerball-section {
+}
+
+.powerball-section.header {
   text-align: center;
   color: #FFF;
-  background-color: #999;
-  border: 1px solid #555;
+  background-color: #899BAA;
   clear: both;
   padding: 2px
 }
 
 .circle-button {
-  background: #fff;
+  background-image: url("/images/ico-fastselect.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #6C4796;
   color: #000;
   border: 1px solid #555;
   border-radius: 50%;
   font-size: 30px;
   font-weight: bold;
-  line-height: 60px;
-  height: 60px;
+  line-height: 50px;
+  height: 50px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 60px;
+  width: 50px;
   cursor: pointer;
   display: table-cell;
   position: relative;
+}
+
+.picked-row {
+  margin-bottom: 5px;
 }

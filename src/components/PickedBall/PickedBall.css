@@ -1,22 +1,28 @@
-.picked-ball {
-    background: #fff;
-    color: #000;
-    border: 1px solid #555;
+
+  .picked-ball {
+    border: 1px solid #B2B2B2;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    font-size: 30px;
-    font-weight: bold;
-    line-height: 60px;
-    height: 60px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
+    font-size: 20px;
+    color: #000;
+    line-height: 50px;
     text-align: center;
-    width: 60px;
+    background: #fff;
+    display: inline-block;
+    margin-right: 3px; 
+    vertical-align: top;
     cursor: pointer;
-    display: table-cell;
-    position: relative;
+    box-shadow: inset 0 3px 5px 0 rgba(0, 0, 0, 0.2);
+
   }
   
   .picked-ball.has-value {
-    background-color: blue;
+    background-color: #3653A4;
+    color: #FFF;
+  }
+
+  .powerball .picked-ball.has-value {
+    background-color: #899BAA;
+    color: #FFF;
   }

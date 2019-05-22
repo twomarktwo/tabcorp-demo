@@ -12,8 +12,8 @@ export const PickedBall: React.FC<PickedBallProps> = (props : PickedBallProps) =
   if(hasValue) { classes.push("has-value");}
 
   return (
-    <button className={classes.join(" ")}>
+    <div className={classes.join(" ")}>
       {hasValue ? props.pickedNumber : props.emptyValue}
-    </button>
+    </div>
   );
 }
