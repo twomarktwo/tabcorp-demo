@@ -1,6 +1,6 @@
 import React from 'react';
 import './LottoPickGrid.css';
-import {LottoCell} from './LottoCell';
+import {LottoCell} from '../LottoCell/LottoCell';
 
 interface LottoPickGridProps {
   startNumber: number;

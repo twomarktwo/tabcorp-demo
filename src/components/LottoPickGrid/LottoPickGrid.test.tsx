@@ -1,7 +1,7 @@
 import React from 'react';
 import { create  } from "react-test-renderer";
 import {LottoPickGrid} from './LottoPickGrid';
-import {LottoCell} from './LottoCell';
+import {LottoCell} from '../LottoCell/LottoCell';
 
 describe("Test Lotto Pick Grid", ()=> {
 

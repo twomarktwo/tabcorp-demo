@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {LottoPickGrid} from './LottoPickGrid';
+import {LottoPickGrid} from '../LottoPickGrid/LottoPickGrid';
 
 const App: React.FC = () => {
   return (

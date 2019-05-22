@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { create  } from "react-test-renderer";
 import App from './App';
-import {LottoCell} from './LottoCell';
-import {LottoPickGrid} from './LottoPickGrid';
+import {LottoPickGrid} from '../LottoPickGrid/LottoPickGrid';
 
 describe("Test Application Setup", ()=> {
   it('renders without crashing', () => {
