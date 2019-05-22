@@ -37,7 +37,10 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
           <span className="powerball">
             <PickedBall pickedNumber={this.state.selectedPowerBall} emptyValue="PB" />
           </span>
-          <button id="autofill-button" className={"circle-button"} onClick={() => this.handleAutofillClick()}></button>
+          <div className="pick-buttons">
+            <button id="autofill-button" className={"circle-button"} onClick={() => this.handleAutofillClick()}></button>
+            <button id="reset-button" className={"circle-button"} onClick={() => this.handleResetClicked()}></button>
+          </div>
         </div>
         <LottoPickGrid startNumber={1} endNumber={35} cellsPerRow={10} selectedNumbers={this.state.selectedValues} />
         <div className="powerball-section">
@@ -56,10 +59,20 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
       });
   }
 
-  handleAutofillClick() {
+  handleResetClicked() {
+    this.resetValues();
+  }
+
+  resetValues() {
     this.setState({
       selectedValues:[],
-      selectedPowerBall: null,
+      selectedPowerBall: null
+    });
+  }
+
+  handleAutofillClick() {
+    this.resetValues();
+    this.setState({
       isLoading: true
     });
 

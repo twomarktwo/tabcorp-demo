@@ -20,9 +20,12 @@
   .picked-ball.has-value {
     background-color: #3653A4;
     color: #FFF;
+    box-shadow: none;
   }
 
   .powerball .picked-ball.has-value {
     background-color: #899BAA;
     color: #FFF;
+    box-shadow: none;
+
   }

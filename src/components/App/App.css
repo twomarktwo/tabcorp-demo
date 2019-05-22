@@ -2,6 +2,13 @@
   display: table;
 }
 
+.pick-buttons {
+  display: block;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
 .powerball-section {
 }
 
@@ -10,14 +17,10 @@
   color: #FFF;
   background-color: #899BAA;
   clear: both;
-  padding: 2px
+  padding: 2px;
 }
 
-.circle-button {
-  background-image: url("/images/ico-fastselect.svg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #6C4796;
+.circle-button { 
   color: #000;
   border: 1px solid #555;
   border-radius: 50%;
@@ -35,6 +38,23 @@
   position: relative;
 }
 
+#autofill-button {
+  background-image: url("/images/ico-fastselect.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #6C4796;
+  margin-right: 5px;
+}
+
+#reset-button {
+  background-image: url("/images/ico-clear.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #767676;
+}
+
 .picked-row {
   margin-bottom: 5px;
+  display: block;
+  position: relative;
 }
