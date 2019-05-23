@@ -8,18 +8,23 @@
     "@types/react": "16.8.18",
     "@types/react-dom": "16.8.4",
     "@types/react-test-renderer": "^16.8.1",
+    "@types/selenium-webdriver": "^4.0.0",
     "axios": "^0.18.0",
+    "chromedriver": "^74.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
     "react-test-renderer": "^16.8.6",
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "ts-jest": "^24.0.2",
     "typescript": "3.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test:e2e": "jest e2e"
   },
   "eslintConfig": {
     "extends": "react-app"

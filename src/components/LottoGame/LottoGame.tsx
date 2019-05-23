@@ -28,14 +28,16 @@ class LottoGame extends React.Component<LottoGameProps, LottoGameState> {
     this.state = this.getDefaultState()
   }
   render() {
-    var loadingOverlayClasses = ["loading-spinner-overlay"];
-    if (this.state.isLoading) { loadingOverlayClasses.push('loading'); }
+    let loadingElement = null;
+    if (this.state.isLoading) {
+      loadingElement = (<div id="loading-spinner-overlay">
+        <div className="loading-spinner"><img src="/images/loading-spinner.svg" alt="loading" /></div>
+      </div>);
+    }
 
     return (
       <div className="app">
-        <div className={loadingOverlayClasses.join(" ")}>
-          <div className="loading-spinner"><img src="/images/loading-spinner.svg" alt="loading" /></div>
-        </div>
+        {loadingElement}
         <div className="picked-row">
           <LottoPickRow pickedLottoNumbers={this.state.selectedValues} selectedPowerBall={this.state.selectedPowerBall} />
           <div className="pick-buttons">
