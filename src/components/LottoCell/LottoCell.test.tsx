@@ -4,22 +4,22 @@ import {LottoCell} from './LottoCell';
 
 describe("Test Lotto Cell", ()=> {
   it('contains a simple value text without selected styling', () => {
-    var appComponent = create(<LottoCell numberValue={1} selected={false} />);
+    var appComponent = create(<LottoCell lottoNumber={1} selected={false} />);
     const rootInstance = appComponent.root;
     const cellButton = rootInstance.findByType("button");
 
     // Test the value inside the button
     expect(cellButton.children[0]).toBe("1");
-    expect(cellButton.props.className).toBe("number-cell");
+    expect(cellButton.props.className).toBe("lotto-cell");
   });
   
   it('contains a simple value text with selected styling', () => {
-    var appComponent = create(<LottoCell numberValue={1} selected={true} />);
+    var appComponent = create(<LottoCell lottoNumber={1} selected={true} />);
     const rootInstance = appComponent.root;
     const cellButton = rootInstance.findByType("button");
 
     // Test the value inside the button
     expect(cellButton.children[0]).toBe("1");
-    expect(cellButton.props.className).toBe("number-cell selected");
+    expect(cellButton.props.className).toBe("lotto-cell selected");
   });
 });

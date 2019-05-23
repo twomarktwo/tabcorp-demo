@@ -1,55 +1,55 @@
-.number-row {
+.lotto-pick-row {
   display: block;
 }
 
-.number-row:first-child {
+.lotto-pick-row:first-child {
   display: block;
   border: 1px solid #B2B2B2;
   border-width: 1px 0px 0px 0px;
 }
 
-.number-cell {
-    background: #fff;
-    border: 1px solid #B2B2B2;
-    border-width: 0 1px 1px 0;
-    font-size: 30px;
-    font-weight: bold;
-    line-height: 60px;
-    height: 60px;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    width: 60px;
-    cursor: pointer;
-    color: #6C4796;
-  }
+.lotto-cell {
+  background: #fff;
+  border: 1px solid #B2B2B2;
+  border-width: 0 1px 1px 0;
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 60px;
+  height: 60px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  width: 60px;
+  cursor: pointer;
+  color: #6C4796;
+}
 
-  .number-cell:first-child {
-    background: #fff;
-    border: 1px solid #B2B2B2;
-    border-width: 0px 1px 1px 1px;
-    font-size: 30px;
-    font-weight: bold;
-    line-height: 60px;
-    height: 60px;
-    padding: 0;
-    text-align: center;
-    width: 60px;
-    cursor: pointer;
-    color: #6C4796;
-  }
+.lotto-cell:first-child {
+  background: #fff;
+  border: 1px solid #B2B2B2;
+  border-width: 0px 1px 1px 1px;
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 60px;
+  height: 60px;
+  padding: 0;
+  text-align: center;
+  width: 60px;
+  cursor: pointer;
+  color: #6C4796;
+}
 
-  .selected {
-    background-color: #E9E4F0;
-    background-image: url(/images/ico-strike.svg);
-    background-size: 80%;
-    background-color: #E9E4F0;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
+.selected {
+  background-color: #E9E4F0;
+  background-image: url(/images/ico-strike.svg);
+  background-size: 80%;
+  background-color: #E9E4F0;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
-  @media only screen and (max-width: 620px) {
-  .number-cell {
+@media only screen and (max-width: 620px) {
+  .lotto-cell {
     background: #fff;
     border: 1px solid #B2B2B2;
     border-width: 0 1px 1px 0;
@@ -64,22 +64,20 @@
     cursor: pointer;
     color: #6C4796;
   }
-  
-  .number-cell:first-child {
+  .lotto-cell:first-child {
     background: #fff;
     border: 1px solid #B2B2B2;
     border-width: 0px 1px 1px 1px;
     font-size: 20px;
     font-weight: bold;
-    line-height:  40px;
-    height:  40px;
+    line-height: 40px;
+    height: 40px;
     padding: 0;
     text-align: center;
     width: 40px;
     cursor: pointer;
     color: #6C4796;
   }
-  
   .selected {
     background-color: #E9E4F0;
     background-image: url(/images/ico-strike.svg);
@@ -88,4 +86,4 @@
     background-position: center;
     background-repeat: no-repeat;
   }
-  }
+}
