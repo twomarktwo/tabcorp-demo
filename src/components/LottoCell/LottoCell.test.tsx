@@ -3,7 +3,6 @@ import { create  } from "react-test-renderer";
 import {LottoCell} from './LottoCell';
 
 describe("Test Lotto Cell", ()=> {
-
   it('contains a simple value text without selected styling', () => {
     var appComponent = create(<LottoCell numberValue={1} selected={false} />);
     const rootInstance = appComponent.root;

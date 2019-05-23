@@ -1,13 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+import { AxiosResponse} from 'axios';
 import './App.css';
 import { LottoPickGrid } from '../LottoPickGrid/LottoPickGrid';
 import { SelectedNumberRow } from '../SelectedNumberRow/SelectedNumberRow';
 
 interface ApplicationState {
-  selectedValues: number[];
+  selectedValues: (number | null)[];
   selectedPowerBall: number | null;
-  isLoading: boolean;
+  isLoading?: boolean;
   error?: string;
 }
 
@@ -17,10 +18,13 @@ interface ApplicationProps {
 class App extends React.Component<ApplicationProps, ApplicationState> {
   constructor(props: ApplicationProps) {
     super(props);
-    this.state = {
-      selectedValues: [],
-      selectedPowerBall: null,
-      isLoading: false
+    this.state = this.getDefaultState()
+  }
+
+  getDefaultState() : ApplicationState {
+    return {
+      selectedValues: new Array(7).fill(null),
+      selectedPowerBall: null
     };
   }
 
@@ -31,7 +35,7 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
     return (
       <div className="app">
         <div className={loadingOverlayClasses.join(" ")}>
-          <div className="loading-spinner"><img src="/images/loading-spinner.svg" /></div>
+          <div className="loading-spinner"><img src="/images/loading-spinner.svg" alt="loading" /></div>
         </div>
         <div className="picked-row">
           <SelectedNumberRow selectedValues={this.state.selectedValues} selectedPowerBall={this.state.selectedPowerBall} />
@@ -40,9 +44,19 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
             <button id="reset-button" className={"circle-button"} onClick={() => this.handleResetClicked()}></button>
           </div>
         </div>
-        <LottoPickGrid startNumber={1} endNumber={35} cellsPerRow={10} selectedNumbers={this.state.selectedValues} />
+        <LottoPickGrid 
+          startNumber={1} 
+          endNumber={35} 
+          cellsPerRow={10} 
+          selectedNumbers={this.state.selectedValues} 
+          onNumberClicked={(selectedNumber) => this.handleSelectedNumber(selectedNumber)} />
         <div className="powerball-section header">Select Your Powerball</div>
-        <LottoPickGrid startNumber={1} endNumber={20} cellsPerRow={10} selectedNumbers={this.state.selectedPowerBall !== null ? [this.state.selectedPowerBall] : []} />
+        <LottoPickGrid 
+          startNumber={1} 
+          endNumber={20} 
+          cellsPerRow={10} 
+          selectedNumbers={[this.state.selectedPowerBall]} 
+          onNumberClicked={(selectedNumber) => this.handleSelectedPowerball(selectedNumber)} />
         <div>{this.state.error}</div>
       </div>
     );
@@ -61,11 +75,35 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
     this.resetValues();
   }
 
-  resetValues() {
+  handleSelectedNumber(selectedNumber: number) {
+    const selectedNumbers = this.state.selectedValues.slice(); // New list to keep imutability paradigm
+
+    // Important indexes based on the current selected number
+    let selectedNumberIndex = selectedNumbers.indexOf(selectedNumber);
+    let firstNullIndex = selectedNumbers.indexOf(null);
+
+    // Check if the number is already selected, if it is then set it to null
+    if (selectedNumberIndex >= 0) {
+      selectedNumbers[selectedNumberIndex] = null;
+    // If not then replace the first null value
+    } else if(firstNullIndex >=0) {
+      selectedNumbers[firstNullIndex] = selectedNumber;
+    }
+
     this.setState({
-      selectedValues: [],
-      selectedPowerBall: null
+      selectedValues: selectedNumbers
     });
+  }
+
+  handleSelectedPowerball(selectedPowerBall : number) {
+    // If the selected powerball value is the same (then we are unselecting it), othewise that is the new powerball
+    this.setState({
+      selectedPowerBall : selectedPowerBall === this.state.selectedPowerBall ? null : selectedPowerBall
+    }); 
+  }
+
+  resetValues() {
+    this.setState(this.getDefaultState());
   }
 
   handleAutofillClick() {
@@ -74,7 +112,7 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
       isLoading: true
     });
 
-    this.fetchLatestLottoResults().then((response) => {
+    this.fetchLatestLottoResults().then((response : AxiosResponse) => {
       let selectedValues = response.data.DrawResults[0].PrimaryNumbers;
       let selectedPowerBall = response.data.DrawResults[0].SecondaryNumbers[0];
       this.setState({
@@ -82,6 +120,7 @@ class App extends React.Component<ApplicationProps, ApplicationState> {
         selectedPowerBall: selectedPowerBall
       });
     }).catch(error => {
+      console.error(error);
       this.setState(({ error: "An error occurred while trying to 'autofill'" }))
     }).finally(() => {
       this.setState({

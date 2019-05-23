@@ -1,34 +1,39 @@
 import React from 'react';
 import './LottoPickGrid.css';
-import {LottoCell} from '../LottoCell/LottoCell';
+import { LottoCell } from '../LottoCell/LottoCell';
 
 interface LottoPickGridProps {
   startNumber: number;
   endNumber: number;
   cellsPerRow: number;
-  selectedNumbers?: number[];
+  selectedNumbers?: (number | null)[];
+  onNumberClicked?: (selectedNumber: number) => void;
 }
 
-export const LottoPickGrid: React.FC<LottoPickGridProps> = (props : LottoPickGridProps) => {
-  const rows : React.ReactElement[] = [];   
-  let currentRowCells : React.ReactElement[] = [];
-  
+export const LottoPickGrid: React.FC<LottoPickGridProps> = (props: LottoPickGridProps) => {
+  const rows: React.ReactElement[] = [];
+  let currentRowCells: React.ReactElement[] = [];
+
   // Build each cell
-  for(let cellNumber = props.startNumber; cellNumber<=props.endNumber; cellNumber++) {
-    let cellIsSelected : boolean = (props.selectedNumbers != null && props.selectedNumbers.indexOf(cellNumber) >= 0);
-    currentRowCells.push(<LottoCell numberValue={cellNumber} key={cellNumber} selected={cellIsSelected} />);
-    
+  for (let cellNumber = props.startNumber; cellNumber <= props.endNumber; cellNumber++) {
+    let cellIsSelected: boolean = (props.selectedNumbers != null && props.selectedNumbers.indexOf(cellNumber) >= 0);
+    currentRowCells.push(<LottoCell 
+      numberValue={cellNumber} 
+      key={cellNumber} 
+      selected={cellIsSelected} 
+      onClick={(selectedNumber) => props.onNumberClicked && props.onNumberClicked(selectedNumber)} />);
+
     // If we have reached the last cell in the row then create the row
-    if(cellNumber % props.cellsPerRow === 0) {
+    if (cellNumber % props.cellsPerRow === 0) {
       let rowNumber = cellNumber / props.cellsPerRow;
       rows.push(<div className="number-row" key={rowNumber}>{currentRowCells}</div>);
-      currentRowCells=[];
+      currentRowCells = [];
     }
   }
 
   // If the last row is 'patially' full then finish creating it
-  if(currentRowCells.length > 0){
-    let rowNumber = props.endNumber/ props.cellsPerRow;
+  if (currentRowCells.length > 0) {
+    let rowNumber = props.endNumber / props.cellsPerRow;
     rows.push(<div className="number-row" key={rowNumber}>{currentRowCells}</div>);
   }
 

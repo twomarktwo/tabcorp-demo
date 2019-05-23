@@ -23,11 +23,16 @@
     box-shadow: none;
   }
 
+  .picked-ball.next-pick {
+    border: 1px solid blue;
+  }
+
   .powerball .picked-ball.has-value {
     background-color: #899BAA;
     color: #FFF;
     box-shadow: none;
   }
+  
 
   
   @media only screen and (max-width: 620px) {

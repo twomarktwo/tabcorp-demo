@@ -1,13 +1,13 @@
 import React from 'react';
 import axios from "axios";
-import {AxiosPromise} from 'axios';
+import { AxiosPromise } from 'axios';
 import ReactDOM from 'react-dom';
-import { create  } from "react-test-renderer";
+import { create } from "react-test-renderer";
 import App from './App';
-import {LottoPickGrid} from '../LottoPickGrid/LottoPickGrid';
+import { LottoPickGrid } from '../LottoPickGrid/LottoPickGrid';
 
 
-describe("Test Application Setup", ()=> {
+describe("Test Application Setup", () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<App />, div);
@@ -17,23 +17,23 @@ describe("Test Application Setup", ()=> {
   it('Contains 2 Lotto Pick Grids', () => {
     var appComponent = create(<App />);
     const rootInstance = appComponent.root;
-    const pickGrids = rootInstance.findAllByType(LottoPickGrid, {deep: true});
+    const pickGrids = rootInstance.findAllByType(LottoPickGrid, { deep: true });
     expect(pickGrids.length).toBe(2);
   });
 
   it('Contains a "Main" Lotto Pick Grid with numbers 1-35', () => {
     var appComponent = create(<App />);
     const rootInstance = appComponent.root;
-    const pickGrids = rootInstance.findAllByType(LottoPickGrid, {deep: true});
+    const pickGrids = rootInstance.findAllByType(LottoPickGrid, { deep: true });
     const mainPickGrid = pickGrids[0];
     expect(mainPickGrid.props.startNumber).toBe(1);
     expect(mainPickGrid.props.endNumber).toBe(35);
   });
-  
+
   it('contains a "Powerball" Lotto Pick Grid with numbers 1-20', () => {
     var appComponent = create(<App />);
     const rootInstance = appComponent.root;
-    const pickGrids = rootInstance.findAllByType(LottoPickGrid, {deep: true});
+    const pickGrids = rootInstance.findAllByType(LottoPickGrid, { deep: true });
     const powerBallGrid = pickGrids[1];
     expect(powerBallGrid.props.startNumber).toBe(1);
     expect(powerBallGrid.props.endNumber).toBe(20);
@@ -53,13 +53,13 @@ describe("Test Application Setup", ()=> {
     const rootInstance = appComponent.root;
 
     // Find the autofill button
-    const autofillButton = rootInstance.findAllByType("button").filter(a=> a.props.id == "autofill-button" )[0];
+    const autofillButton = rootInstance.findAllByType("button").filter(a => a.props.id == "autofill-button")[0];
     autofillButton.props.onClick(); // Simulate the click of the autofill
     let instance = appComponent.getInstance();
 
     // Allow render loop to be called then assert the grids have had the selected values set
-    setImmediate(()=> {
-      const pickGrids = rootInstance.findAllByType(LottoPickGrid, {deep: true});
+    setImmediate(() => {
+      const pickGrids = rootInstance.findAllByType(LottoPickGrid, { deep: true });
 
       const mainPickGrid = pickGrids[0];
       expect(mainPickGrid.props.selectedNumbers.length).toBe(7);
@@ -92,25 +92,110 @@ describe("Test Application Setup", ()=> {
     const rootInstance = appComponent.root;
 
     // Find the autofill button
-    const autofillButton = rootInstance.findAllByType("button").filter(a=> a.props.id == "autofill-button" )[0];
+    const autofillButton = rootInstance.findAllByType("button").filter(a => a.props.id == "autofill-button")[0];
     autofillButton.props.onClick(); // Simulate the click of the autofill
 
-    setImmediate(()=> {
-      const resetButton = rootInstance.findAllByType("button").filter(a=> a.props.id == "reset-button" )[0];
+    setImmediate(() => {
+      const resetButton = rootInstance.findAllByType("button").filter(a => a.props.id == "reset-button")[0];
       resetButton.props.onClick(); // Simulate the click of the autofill
-      
-      // Allow render loop to be called then assert the grids have had the selected values set
-      setImmediate(()=> {
-        const pickGrids = rootInstance.findAllByType(LottoPickGrid, {deep: true});
-        
+
+      // Allow render loop to be called then assert the grids have had the selected values reset
+      setImmediate(() => {
+        const pickGrids = rootInstance.findAllByType(LottoPickGrid, { deep: true });
+
         const mainPickGrid = pickGrids[0];
-        expect(mainPickGrid.props.selectedNumbers.length).toBe(0);
-        
+        expect(mainPickGrid.props.selectedNumbers.filter((selectedNumber: number | null) => selectedNumber != null).length).toBe(0);
+        expect(mainPickGrid.props.selectedNumbers.filter((selectedNumber: number | null) => selectedNumber == null).length).toBe(7);
+
         const powerBallGrid = pickGrids[1];
-        expect(powerBallGrid.props.selectedNumbers.length).toBe(0);
+        expect(powerBallGrid.props.selectedNumbers.filter((selectedNumber: number | null) => selectedNumber != null).length).toBe(0);
+        expect(powerBallGrid.props.selectedNumbers.filter((selectedNumber: number | null) => selectedNumber == null).length).toBe(1);
         done();
       })
     });
+  });
+
+  it('has correct values after selecting all values and a powerball', () => {
+    var appComponent = create(<App />);
+    const rootInstance = appComponent.root;
+    const pickGrids = rootInstance.findAllByType(LottoPickGrid, { deep: true });
+
+    const mainBallGrid = pickGrids[0];
+    const powerBallGrid = pickGrids[1];
+
+    mainBallGrid.props.onNumberClicked(1);
+    mainBallGrid.props.onNumberClicked(13);
+    mainBallGrid.props.onNumberClicked(15);
+    mainBallGrid.props.onNumberClicked(17);
+    mainBallGrid.props.onNumberClicked(20);
+    mainBallGrid.props.onNumberClicked(22);
+    mainBallGrid.props.onNumberClicked(32);
+
+    expect(mainBallGrid.props.selectedNumbers[0]).toBe(1);
+    expect(mainBallGrid.props.selectedNumbers[1]).toBe(13);
+    expect(mainBallGrid.props.selectedNumbers[2]).toBe(15);
+    expect(mainBallGrid.props.selectedNumbers[3]).toBe(17);
+    expect(mainBallGrid.props.selectedNumbers[4]).toBe(20);
+    expect(mainBallGrid.props.selectedNumbers[5]).toBe(22);
+    expect(mainBallGrid.props.selectedNumbers[6]).toBe(32);
+
+    expect(powerBallGrid.props.selectedNumbers[0]).toBeNull();
+    powerBallGrid.props.onNumberClicked(13);
+    expect(powerBallGrid.props.selectedNumbers[0]).toBe(13);
+  });
+
+  it('has correct values after selecting all values and deslecting some, and selecting again', () => {
+    var appComponent = create(<App />);
+    const rootInstance = appComponent.root;
+    const pickGrids = rootInstance.findAllByType(LottoPickGrid, { deep: true });
+
+    const mainBallGrid = pickGrids[0];
+    const powerBallGrid = pickGrids[1];
+
+    mainBallGrid.props.onNumberClicked(1);
+    mainBallGrid.props.onNumberClicked(13);
+    mainBallGrid.props.onNumberClicked(15);
+    mainBallGrid.props.onNumberClicked(17);
+    mainBallGrid.props.onNumberClicked(20);
+    mainBallGrid.props.onNumberClicked(22);
+    mainBallGrid.props.onNumberClicked(32);
+
+    // Now Deselect values at index 0, 2, and 6
+    mainBallGrid.props.onNumberClicked(1);
+    mainBallGrid.props.onNumberClicked(15);
+    mainBallGrid.props.onNumberClicked(32);
+
+    expect(mainBallGrid.props.selectedNumbers[0]).toBeNull();
+    expect(mainBallGrid.props.selectedNumbers[2]).toBeNull();
+    expect(mainBallGrid.props.selectedNumbers[6]).toBeNull();
+
+    //Selection should populate in order of indexes 0, 2 and 6
+    mainBallGrid.props.onNumberClicked(2);
+    mainBallGrid.props.onNumberClicked(16);
+    mainBallGrid.props.onNumberClicked(33);
+    expect(mainBallGrid.props.selectedNumbers[0]).toBe(2);
+    expect(mainBallGrid.props.selectedNumbers[1]).toBe(13);
+    expect(mainBallGrid.props.selectedNumbers[2]).toBe(16);
+    expect(mainBallGrid.props.selectedNumbers[3]).toBe(17);
+    expect(mainBallGrid.props.selectedNumbers[4]).toBe(20);
+    expect(mainBallGrid.props.selectedNumbers[5]).toBe(22);
+    expect(mainBallGrid.props.selectedNumbers[6]).toBe(33);
+  });
+
+  it('has correct powerball after several selections and deselections', () => {
+    var appComponent = create(<App />);
+    const rootInstance = appComponent.root;
+    const pickGrids = rootInstance.findAllByType(LottoPickGrid, { deep: true });
+
+    const powerBallGrid = pickGrids[1];
+    powerBallGrid.props.onNumberClicked(13);
+    expect(powerBallGrid.props.selectedNumbers[0]).toBe(13);
+    powerBallGrid.props.onNumberClicked(13);
+    expect(powerBallGrid.props.selectedNumbers[0]).toBeNull();
+    powerBallGrid.props.onNumberClicked(15);
+    expect(powerBallGrid.props.selectedNumbers[0]).toBe(15);
+    powerBallGrid.props.onNumberClicked(32);
+    expect(powerBallGrid.props.selectedNumbers[0]).toBe(32);
   });
 
 });
