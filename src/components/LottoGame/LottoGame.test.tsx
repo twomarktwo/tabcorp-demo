@@ -3,7 +3,7 @@ import axios from "axios";
 import { AxiosPromise } from 'axios';
 import ReactDOM from 'react-dom';
 import { create } from "react-test-renderer";
-import App from './App';
+import App from './LottoGame';
 import { LottoPickGrid } from '../LottoPickGrid/LottoPickGrid';
 
 

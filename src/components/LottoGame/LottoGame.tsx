@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { AxiosResponse} from 'axios';
-import './App.css';
+import './LottoGame.css';
 import { LottoPickGrid } from '../LottoPickGrid/LottoPickGrid';
 import { SelectedNumberRow } from '../SelectedNumberRow/SelectedNumberRow';
 
