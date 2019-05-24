@@ -1,17 +1,30 @@
 import jest from 'jest';
 import fs from 'fs';
-import webdriver, { WebDriver } from 'selenium-webdriver';
-import until from 'selenium-webdriver/lib/until';
-import { Driver } from 'selenium-webdriver/firefox';
+import webdriver from 'selenium-webdriver';
+import chrome from 'selenium-webdriver/chrome';
 
+// Build a chrome driver to run the tests with
+chrome.setDefaultService(new chrome.ServiceBuilder(require('chromedriver').path).build());
+var options: chrome.Options = new chrome.Options();
+options.addArguments("--window-size=800,650");
 var browser = new webdriver.Builder()
-    .usingServer("")
+    .setChromeOptions(options)
     .withCapabilities({ browserName: "chrome" })
     .build();
 
-
 describe("Test Lotto Control", () => {
-    it("succesfull loads the page, takes a screenshot, clicks autofill and has 7 primary lotto numbers are 1 powerball selected, taking a screenshot on success", async (done) => {
+
+    // Cleanup by closing the browser
+    afterAll(async (done) => {
+        try {
+            await browser.close();
+            done();
+        } catch (e) {
+            done(e);
+        }
+    });
+
+    test("succesfull loads the page, takes a screenshot, clicks autofill and has 7 primary lotto numbers are 1 powerball selected, taking a screenshot on success", async (done) => {
         try {
             await browser.get("http://localhost:3000");
             let title = await browser.getTitle();
@@ -31,7 +44,6 @@ describe("Test Lotto Control", () => {
             let selectedPowerball = await lotoGrids[1].findElements(webdriver.By.css(".lotto-cell.selected"));
             expect(powerballCells.length).toBe(20);
             expect(selectedPowerball.length).toBe(0);
-
 
             let autofillButton = await browser.findElement(webdriver.By.id("autofill-button"));
             await autofillButton.click();
@@ -54,7 +66,7 @@ describe("Test Lotto Control", () => {
             return done(error);
         }
         done();
-    });
+    }, 20000);
 });
 
 /**
@@ -70,5 +82,5 @@ async function isNotPresent(driver: webdriver.WebDriver, locator: webdriver.Loca
             }
             return false;
         });
-    }, 10000, 'The element was still present when it should have disappeared.');
+    }, 20000, 'The element was still present when it should have disappeared.');
 }
